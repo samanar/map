@@ -1,4 +1,3 @@
-
 <?php
 
 namespace Samanar\Map;
@@ -7,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use config;
 
 
-class Map extends Model
+class UserMap extends Model
 {
     public function __construct()
     {
