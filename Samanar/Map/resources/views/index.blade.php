@@ -34,7 +34,7 @@
     <script>
     $(document).ready(function() {
         // Initial map instance
-            const map = $.sMap({
+            const map = $.Map({
                 mode: 'development',
                 element: '#map',
                 presets: {

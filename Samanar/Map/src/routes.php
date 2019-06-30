@@ -1,4 +1,4 @@
 <?php
 
 
-Route::get('/map/{province}', 'Samanar\Map\MapController@index')->name('map.index');
+Route::get('map/{user_id}/{province}/{state}/{city?}', 'Samanar\Map\MapController@index')->name('map.index');
