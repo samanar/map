@@ -42,7 +42,7 @@
                         lat: {{ $lat }},
                         lng: {{ $long }},
                     },
-                    zoom: 12,
+                    zoom: {{ $zoom }},
                 },
                 after: afterMapInitialized
             });
