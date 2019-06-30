@@ -85,6 +85,39 @@
             });
 
 
+
+
+            // if previous location of user was found
+            // initialize a marker from previous location
+            @if($previous_lat)
+                var previous_lat = "{{ $previous_lat }}";
+                var previous_long = "{{ $previous_long }}";
+                $.sMap.features.marker.create({
+                        name: 'previous_location',
+                        popup: {
+                            title: {
+                                html: 'مکان قبلی ثبت شده ی شما در سیستم',
+                                i18n: ''
+                                },
+                            description: {
+                                html: `
+                                    <div>Lat: ${previous_lat} </div>
+                                    <div>Long: ${previous_long}</div>`,
+                                i18n: ''
+                                },
+                            custom: false
+                        },
+                        latlng: {
+                            lat: previous_lat,
+                            lng: previous_long,
+                        },
+                        popupOpen: true,
+                        draggable: false,
+                        toolbar: []
+                    });
+            @endif
+
+
             // What is called after map instance is created
             function afterMapInitialized() {
                     // Change cursor to a marker icon (uneccessary)

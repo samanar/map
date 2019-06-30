@@ -14,7 +14,7 @@ class UserMapController extends Controller
     public function store(Request $request)
     {
         // Todo: add validation
-        $userMap = UserMap::updateOrCreate(
+        $user_map = UserMap::updateOrCreate(
             ['user_id' => $request->user_id],
             ['longitude' => $request->longitude, 'latitude' => $request->latitude]
         );

@@ -5,12 +5,24 @@ namespace Samanar\Map;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Samanar\Map\Map;
+use Samanar\Map\UserMap;
 
 class MapController extends Controller
 {
     // index file . returns map page
     public function index(Request $request, $user_id, $province, $state, $city = null)
     {
+        // first see if user already exists and has a previous coordinate
+        $previous_lat = null;
+        $previous_long = null;
+        $user_map = UserMap::where('user_id', $user_id)->first();
+        if ($user_map) {
+            $previous_lat = $user_map->latitude;
+            $previous_long = $user_map->longitude;
+        }
+
+
+        // find coordinates by province,state,city
         $coordinates = $this->getCoordinates($province, $state, $city);
         if ($coordinates) {
             $long = $coordinates->longitude;
@@ -23,6 +35,8 @@ class MapController extends Controller
                 ->with('province', $province)
                 ->with('state', $state)
                 ->with('city', $city)
+                ->with('previous_lat', $previous_lat)
+                ->with('previous_long', $previous_long)
                 ->with('user_id', $user_id);
         } else {
             dd('not found');
