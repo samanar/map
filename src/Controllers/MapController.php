@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Samanar\Map\Map;
 use Samanar\Map\UserMap;
+use GuzzleHttp\Client;
+use function GuzzleHttp\json_decode;
+use Config;
 
 class MapController extends Controller
 {
@@ -13,34 +16,40 @@ class MapController extends Controller
     public function index(Request $request, $user_id, $province, $state, $city = null)
     {
         // first see if user already exists and has a previous coordinate
+        // Todo: database should be improved
         $previous_lat = null;
         $previous_long = null;
+        $zoom = 12;
         $user_map = UserMap::where('user_id', $user_id)->first();
         if ($user_map) {
             $previous_lat = $user_map->latitude;
             $previous_long = $user_map->longitude;
         }
 
-
         // find coordinates by province,state,city
         $coordinates = $this->getCoordinates($province, $state, $city);
         if ($coordinates) {
             $long = $coordinates->longitude;
             $lat = $coordinates->latitude;
-            $zoom = 12;
-            return view('map::index')
-                ->with('long', $long)
-                ->with('lat', $lat)
-                ->with('zoom', $zoom)
-                ->with('province', $province)
-                ->with('state', $state)
-                ->with('city', $city)
-                ->with('previous_lat', $previous_lat)
-                ->with('previous_long', $previous_long)
-                ->with('user_id', $user_id);
         } else {
-            dd('not found');
+            $coordinates = $this->requestApi($province, $state);
+            if ($coordinates) {
+                $long = $coordinates['longitude'];
+                $lat = $coordinates['latitude'];
+            } else {
+                dd('not found');
+            }
         }
+        return view('map::index')
+            ->with('long', $long)
+            ->with('lat', $lat)
+            ->with('zoom', $zoom)
+            ->with('province', $province)
+            ->with('state', $state)
+            ->with('city', $city)
+            ->with('previous_lat', $previous_lat)
+            ->with('previous_long', $previous_long)
+            ->with('user_id', $user_id);
     }
 
 
@@ -124,5 +133,35 @@ class MapController extends Controller
             $coordinate['longitude'] = $this->split_input($coordinate['longitude']);
             $coordinate->save();
         }
+    }
+
+
+    // requesting from opencagedata.com (forward geocoding request)
+    //
+    private function requestApi($province, $state)
+    {
+        $key = Config::get('map.openCageApiKey');
+        $data = 'q=';
+        $data .= $province . ' ' . $state;
+        $data .= '&key=' . $key;
+        $client = new Client([
+            // Base URI is used with relative requests
+            'base_uri' => 'https://api.opencagedata.com/geocode/v1/json?no_annotations=1&no_record=1&limit=2&' . $data,
+            // You can set any number of default request options.
+            'timeout'  => 5.0,
+        ]);
+
+        try {
+            $response = $client->request('GET', '');
+        } catch (RequestException $e) {
+            dd($e);
+        }
+        $body = json_decode($response->getBody(), true);
+        $coordinates = null;
+        if (sizeof($body['results'])) {
+            $coordinates['latitude'] = $body['results'][0]['geometry']['lat'];
+            $coordinates['longitude'] = $body['results'][0]['geometry']['lng'];
+        }
+        return $coordinates;
     }
 }
