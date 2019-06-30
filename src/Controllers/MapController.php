@@ -17,7 +17,11 @@ class MapController extends Controller
             $long = $coordinates->longitude;
             $lat = $coordinates->latitude;
             $zoom = 12;
-            return view('map::index')->with('long', $long)->with('lat', $lat)->with('zoom', $zoom);
+            return view('map::index')
+                ->with('long', $long)
+                ->with('lat', $lat)
+                ->with('zoom', $zoom)
+                ->with('user_id', $user_id);
         } else {
             dd('not found');
         }

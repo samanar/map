@@ -22,8 +22,15 @@
                 <div class="col-sm-10">
                     <h2>here</h2>
                     <div id="map"></div>
+                     <form method="post" action="{{ route('map.store') }}" class="mt-4 mb-4">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{ $user_id }}">
+                        <input type="hidden" name="latitude" id="user_latitude" value="{{ $lat }}">
+                        <input type="hidden" name="longitude" id="user_longitude" value="{{ $long }}">
+                        <input type="submit" class="btn btn-primary btn-block" name="submit" value="ثبت موقعیت">
+                    </form>
                 </div>
-            </div>
+            </div<
         </div>
     </body>
 
