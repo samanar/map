@@ -46,7 +46,10 @@
                 },
                 after: afterMapInitialized
             });
-            // Add base Layer to sMap plugin
+
+
+            // Add base Layer to sMap plugin (required)
+            // Todo: check documentation for alternative layers
             $.sMap.layers.static.build({
                 layers: {
                     base: {
@@ -58,8 +61,10 @@
                     },
                 },
             });
+
             //  Initialize the marker feature
             $.sMap.features();
+
             // adding fullscreen buuton (top right fo map)
             $.sMap.fullscreen.implement();
 
@@ -68,31 +73,36 @@
             $.sMap.userLocation.implement({
                 history: true,
             });
+
+
             // What is called after map instance is created
-            // function afterMapInitialized() {
-            //         // Change cursor to a marker icon (uneccessary)
-            //         // So The curser be a Marker to represent adding marker
-            //     $('.leaflet-container').addClass("cursor-marker");
-            //     map.on('click', (event) => {
-            //         $.sMap.features.marker.create({
-            //             name: 'user-location',
-            //             popup: {
-            //                 title: {
-            //                     html: 'Lat Lng',
-            //                 },
-            //                 description: {
-            //                     html: 'logged in console',
-            //                 },
-            //             },
-            //             latlng: event.latlng,
-            //             popupOpen: true,
-            //             draggable: true,
-            //             toolbar: []
-            //         });
-            //         // logging latlng to console
-            //         console.log(event.latlng.lat);
-            //     });
-            // }
+            function afterMapInitialized() {
+                    // Change cursor to a marker icon (uneccessary)
+                    // So The curser be a Marker to represent adding marker
+                $('.leaflet-container').addClass("cursor-marker");
+                map.on('click', (event) => {
+                    $.sMap.features.marker.create({
+                        name: 'مکان انتخابی شما',
+                        popup: {
+                            title: {
+                                html: 'مکان انتخابی شما',
+                                },
+                            description: {
+                                html: `
+                                    <div>Lat: ${event.latlng.lat} </div>
+                                    <div>Long: ${event.latlng.lng}</div>`,
+                                },
+                            custom: false
+                        },
+                        latlng: event.latlng,
+                        popupOpen: true,
+                        draggable: true,
+                        toolbar: []
+                    });
+                    // logging latlng to console
+                    console.log(event.latlng.lat);
+                });
+            }
         });
     </script>
 </html>
