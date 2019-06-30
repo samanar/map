@@ -1194,6 +1194,7 @@ class DatabaseSeeder extends Seeder
             array('id' => '1222', 'latitude' => '35° 44\' 54.193', 'longitude' => '50° 56\' 26.804', 'province' => 'البرز', 'state' => 'فردیس', 'city' => 'مشکین دشت')
         );
 
-        DB::table('coordinates')->insert($data);
+        $table_name = Config::get('map.mapTableName');
+        DB::table($table_name)->insert($data);
     }
 }

@@ -11,6 +11,7 @@ class MapController extends Controller
     // index file . returns map page
     public function index(Request $request, $user_id, $province, $state, $city = null)
     {
+        // $this->updateData();
         $coordinates = $this->getCoordinates($province, $state, $city);
         if ($coordinates) {
             $long = $coordinates->longitude;
@@ -37,10 +38,10 @@ class MapController extends Controller
 
         if (!$coordinates) {
             // Todo: this condition should be removed after reformatting the database
-            $coordinates = $this->getWithProvinceAndStateSwaped($province, state);
+            $coordinates = $this->getWithProvinceAndStateSwapped($province, $state);
         }
         if (!$coordinates) {
-            $coordinates = $this->getWithProvinceAndStateLike($province, state);
+            $coordinates = $this->getWithProvinceAndStateLike($province, $state);
         }
         return $coordinates;
     }
@@ -60,7 +61,7 @@ class MapController extends Controller
 
     // this function is called due to confusion found in database
     // Todo: this function should be removed after reformatting the database
-    private function getWithProvinceAndStateSwaped($province, $state)
+    private function getWithProvinceAndStateSwapped($province, $state)
     {
         return $this->getWithProvinceAndState($state, $province);
     }
@@ -92,7 +93,7 @@ class MapController extends Controller
         return $deg + ((($min * 60) + ($sec)) / 3600);
     }
 
-    // converts database seed longitudes and latitudes to decimal
+    // runs DMStoDD on all database records
     // Todo: use chunk method for better memory utilization
     private function updateData()
     {

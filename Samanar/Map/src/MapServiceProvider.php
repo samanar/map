@@ -19,11 +19,14 @@ class MapServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../public/' => public_path(''),
         ], 'public');
+        $this->publishes([
+            __DIR__ . '/../config/map.php' => config_path('map.php'),
+        ]);
 
         // Publishing is only necessary when using the CLI.
-        // if ($this->app->runningInConsole()) {
-        //     $this->bootForConsole();
-        // }
+        if ($this->app->runningInConsole()) {
+            $this->bootForConsole();
+        }
     }
 
     /**
@@ -33,7 +36,7 @@ class MapServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/map.php', 'map');
+        // $this->mergeConfigFrom(__DIR__ . '/../config/map.php', 'map');
         $this->app->make('Samanar\Map\MapController');
 
         // Register the service the package provides.

@@ -13,7 +13,8 @@ class CreateCoordinatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('coordinates', function (Blueprint $table) {
+        $table_name = Config::get('map.mapTableName');
+        Schema::create($table_name, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('province')->index();
             $table->string('state')->index();
@@ -31,6 +32,7 @@ class CreateCoordinatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('coordinates');
+        $table_name = Config::get('map.mapTableName');
+        Schema::dropIfExists($table_name);
     }
 }
