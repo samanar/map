@@ -11,7 +11,6 @@ class MapController extends Controller
     // index file . returns map page
     public function index(Request $request, $user_id, $province, $state, $city = null)
     {
-        // $this->updateData();
         $coordinates = $this->getCoordinates($province, $state, $city);
         if ($coordinates) {
             $long = $coordinates->longitude;
@@ -21,6 +20,9 @@ class MapController extends Controller
                 ->with('long', $long)
                 ->with('lat', $lat)
                 ->with('zoom', $zoom)
+                ->with('province', $province)
+                ->with('state', $state)
+                ->with('city', $city)
                 ->with('user_id', $user_id);
         } else {
             dd('not found');

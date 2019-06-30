@@ -13,6 +13,16 @@ class UserMapController extends Controller
 
     public function store(Request $request)
     {
-        dd($request);
+        // Todo: add validation
+        $userMap = UserMap::updateOrCreate(
+            ['user_id' => $request->user_id],
+            ['longitude' => $request->longitude, 'latitude' => $request->latitude]
+        );
+        return redirect()->route('map.index', [
+            'user_id' => $request->user_id,
+            'province' => $request->province,
+            'state' => $request->state,
+            'city' => $request->city,
+        ]);
     }
 }

@@ -15,4 +15,5 @@ class UserMap extends Model
     }
 
     public $timestamps = false;
+    protected $fillable = ['user_id', 'longitude', 'latitude'];
 }

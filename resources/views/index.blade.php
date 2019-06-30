@@ -7,8 +7,8 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Map</title>
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-        <link rel="stylesheet" href="{{ asset('map/dist/css/s.map.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('map/dist/css/fa/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('mapIr/dist/css/s.map.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('mapIr/dist/css/fa/style.css') }}">
         <style>
             #map {
                 width: 100%;
@@ -27,6 +27,9 @@
                         <input type="hidden" name="user_id" value="{{ $user_id }}">
                         <input type="hidden" name="latitude" id="user_latitude" value="{{ $lat }}">
                         <input type="hidden" name="longitude" id="user_longitude" value="{{ $long }}">
+                        <input type="hidden" name="province"  value="{{ $province }}">
+                        <input type="hidden" name="state"  value="{{ $state }}">
+                        <input type="hidden" name="city"  value="{{ $city }}">
                         <input type="submit" class="btn btn-primary btn-block" name="submit" value="ثبت موقعیت">
                     </form>
                 </div>
@@ -35,9 +38,9 @@
     </body>
 
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('map/dist/js/jquery.env.js') }}"></script>
-    <script src="{{ asset('map/dist/js/s.map.styles.js') }}"></script>
-    <script src="{{ asset('map/dist/js/s.map.min.js') }}"></script>
+    <script src="{{ asset('mapIr/dist/js/jquery.env.js') }}"></script>
+    <script src="{{ asset('mapIr/dist/js/s.map.styles.js') }}"></script>
+    <script src="{{ asset('mapIr/dist/js/s.map.min.js') }}"></script>
     <script>
     $(document).ready(function() {
         // Initial map instance
@@ -89,15 +92,17 @@
                 $('.leaflet-container').addClass("cursor-marker");
                 map.on('click', (event) => {
                     $.sMap.features.marker.create({
-                        name: 'مکان انتخابی شما',
+                        name: 'user_location',
                         popup: {
                             title: {
                                 html: 'مکان انتخابی شما',
+                                i18n: ''
                                 },
                             description: {
                                 html: `
                                     <div>Lat: ${event.latlng.lat} </div>
                                     <div>Long: ${event.latlng.lng}</div>`,
+                                i18n: ''
                                 },
                             custom: false
                         },
@@ -107,7 +112,11 @@
                         toolbar: []
                     });
                     // logging latlng to console
-                    console.log(event.latlng.lat);
+                    console.log(event.latlng);
+
+                    // updating hidden inputs of forms for submit
+                    $("#user_longitude").val(event.latlng.lng);
+                    $("#user_latitude").val(event.latlng.lat);
                 });
             }
         });
