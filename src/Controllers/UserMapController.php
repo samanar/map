@@ -1,6 +1,6 @@
 <?php
 
-namespace Samanar\Map;
+namespace Samanar\Map\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,7 +13,7 @@ class UserMapController extends Controller
 
     public function store(Request $request)
     {
-        // Todo: add validation
+        // Todo: do validation
         $user_map = UserMap::updateOrCreate(
             ['user_id' => $request->user_id],
             ['longitude' => $request->longitude, 'latitude' => $request->latitude]

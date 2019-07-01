@@ -1,20 +1,18 @@
 <?php
-
-
-// namespace Samanar\Map;
+namespace Samanar\Map\Database\Seeds;
 
 use Illuminate\Database\Seeder;
+use Samanar\Map\Map;
 
-class DatabaseSeeder extends Seeder
+class MapTableSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
-    public function run()
+    public static function run()
     {
-
         $coordinates = array(
             array('id' => '1', 'province' => 'مرکزی', 'state' => 'آشتیان', 'city' => 'آشتیان', 'longitude' => '50.00579611111111', 'latitude' => '34.52359'),
             array('id' => '2', 'province' => 'مرکزی', 'state' => 'خمین', 'city' => 'قورچی باشی', 'longitude' => '49.87743305555556', 'latitude' => '33.674776944444446'),
@@ -1194,8 +1192,6 @@ class DatabaseSeeder extends Seeder
             array('id' => '1222', 'province' => 'البرز', 'state' => 'فردیس', 'city' => 'مشکین دشت', 'longitude' => '50.940778888888886', 'latitude' => '35.74838694444445')
         );
 
-
-        $table_name = Config::get('map.mapTableName');
-        DB::table($table_name)->insert($coordinates);
+        Map::insert($coordinates);
     }
 }

@@ -13,20 +13,8 @@ class MapServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'map');
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadRoutesFrom(__DIR__ . '/routes.php');
-        $this->publishes([
-            __DIR__ . '/../public/' => public_path(''),
-        ], 'public');
-        $this->publishes([
-            __DIR__ . '/../config/map.php' => config_path('map.php'),
-        ]);
-
-        // Publishing is only necessary when using the CLI.
-        if ($this->app->runningInConsole()) {
-            $this->bootForConsole();
-        }
+        $this->loadDependencies()
+            ->publishDependencies();
     }
 
     /**
@@ -36,54 +24,31 @@ class MapServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // $this->mergeConfigFrom(__DIR__ . '/../config/map.php', 'map');
-        $this->app->make('Samanar\Map\MapController');
+        $this->app->make('Samanar\Map\Controllers\MapController');
+        $this->app->make('Samanar\Map\Controllers\UserMapController');
 
         // Register the service the package provides.
-        $this->app->singleton('map', function ($app) {
+        $this->app->bind('map', function ($app) {
             return new Map;
         });
-        include __DIR__ . '/../database/seeds/DatabaseSeeder.php';
     }
 
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
+    private function loadDependencies()
     {
-        return ['map'];
+        $this->loadViewsFrom(__DIR__ . '/resources/views', 'map');
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+        $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
+
+        return $this;
     }
 
-    /**
-     * Console-specific booting.
-     *
-     * @return void
-     */
-    protected function bootForConsole()
+    private function publishDependencies()
     {
-        // Publishing the configuration file.
         $this->publishes([
-            __DIR__ . '/../config/map.php' => config_path('map.php'),
-        ], 'map.config');
-
-        // Publishing the views.
-        /*$this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/samanar'),
-        ], 'map.views');*/
-
-        // Publishing assets.
-        /*$this->publishes([
-            __DIR__.'/../resources/assets' => public_path('vendor/samanar'),
-        ], 'map.views');*/
-
-        // Publishing the translation files.
-        /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/samanar'),
-        ], 'map.views');*/
-
-        // Registering package commands.
-        // $this->commands([]);
+            __DIR__ . '/public/' => public_path(''),
+        ]);
+        $this->publishes([
+            __DIR__ . '/config/map.php' => config_path('map.php'),
+        ]);
     }
 }

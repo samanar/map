@@ -13,8 +13,7 @@ class createUserCoordinatesTable extends Migration
      */
     public function up()
     {
-        $table_name = Config::get('map.userMapRelationTableName');
-        Schema::create($table_name, function (Blueprint $table) {
+        Schema::create(config('map.userMapRelationTableName'), function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->string('longitude');
@@ -32,7 +31,6 @@ class createUserCoordinatesTable extends Migration
      */
     public function down()
     {
-        $table_name = Config::get('map.userMapRelationTableName');
-        Schema::dropIfExists($table_name);
+        Schema::dropIfExists(config('map.userMapRelationTableName'));
     }
 }

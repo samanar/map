@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Samanar\Map\Database\Seeds\MapTableSeeder;
 
 class CreateCoordinatesTable extends Migration
 {
@@ -13,8 +14,7 @@ class CreateCoordinatesTable extends Migration
      */
     public function up()
     {
-        $table_name = Config::get('map.mapTableName');
-        Schema::create($table_name, function (Blueprint $table) {
+        Schema::create(config('map.mapTableName'), function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('province')->index();
             $table->string('state')->index();
@@ -23,6 +23,8 @@ class CreateCoordinatesTable extends Migration
             $table->string('latitude');
             $table->index(['province', 'state']);
         });
+
+        MapTableSeeder::run();
     }
 
     /**
@@ -32,7 +34,6 @@ class CreateCoordinatesTable extends Migration
      */
     public function down()
     {
-        $table_name = Config::get('map.mapTableName');
-        Schema::dropIfExists($table_name);
+        Schema::dropIfExists(config('map.mapTableName'));
     }
 }
