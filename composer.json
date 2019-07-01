@@ -13,6 +13,9 @@
         "Laravel",
         "Map"
     ],
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
     "autoload": {
         "psr-4": {
             "Samanar\\Map\\": "src/"
