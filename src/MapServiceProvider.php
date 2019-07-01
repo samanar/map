@@ -24,8 +24,8 @@ class MapServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->make('Samanar\Map\Controllers\MapController');
-        $this->app->make('Samanar\Map\Controllers\UserMapController');
+        $this->app->make('Samanar\Map\App\Http\Controllers\UserMapController');
+        $this->app->make('Samanar\Map\App\Http\Controllers\MapController');
 
         // Register the service the package provides.
         $this->app->bind('map', function ($app) {

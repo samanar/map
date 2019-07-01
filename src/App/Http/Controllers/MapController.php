@@ -1,14 +1,13 @@
 <?php
 
-namespace Samanar\Map\Controllers;
+namespace Samanar\Map\App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Samanar\Map\Map;
-use Samanar\Map\UserMap;
+use Samanar\Map\App\Models\Map;
+use Samanar\Map\App\Models\UserMap;
 use GuzzleHttp\Client;
 use function GuzzleHttp\json_decode;
-use Config;
 
 class MapController extends Controller
 {

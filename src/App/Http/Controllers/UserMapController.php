@@ -1,6 +1,6 @@
 <?php
 
-namespace Samanar\Map\Controllers;
+namespace Samanar\Map\App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

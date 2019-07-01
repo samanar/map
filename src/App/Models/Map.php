@@ -1,9 +1,8 @@
 <?php
 
-namespace Samanar\Map;
+namespace Samanar\Map\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use config;
 
 
 class Map extends Model
